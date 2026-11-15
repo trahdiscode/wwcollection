@@ -112,7 +112,7 @@ export const MovieExplorerView: React.FC<MovieExplorerViewProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       <MovieFilterBar
         filters={filters}
         onChangeFilters={setFilters}
@@ -123,22 +123,22 @@ export const MovieExplorerView: React.FC<MovieExplorerViewProps> = ({
       />
 
       {filteredAndSortedMovies.length === 0 ? (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-16 text-center text-slate-400">
-          <p className="text-base font-semibold text-slate-200">
+        <div className="bg-[#0c0d12] border border-[#1d2028] rounded-2xl p-12 sm:p-16 md:p-20 text-center text-[#8a92a1]">
+          <p className="text-base sm:text-lg font-semibold text-[#f4f5f8]">
             No box-office records match the active criteria
           </p>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-[#717886] mt-1.5 max-w-md mx-auto">
             Try resetting your search filters or clearing the genre/industry selection.
           </p>
           <button
             onClick={handleReset}
-            className="mt-4 px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs hover:bg-amber-400 transition-colors"
+            className="mt-5 px-4 py-2 bg-[#d99b26] hover:bg-[#e6a833] text-black font-bold rounded-lg text-xs transition-colors"
           >
             Reset Filters
           </button>
         </div>
       ) : filters.viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
           {filteredAndSortedMovies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} onSelectMovie={onSelectMovie} />
           ))}

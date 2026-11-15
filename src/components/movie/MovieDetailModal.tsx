@@ -13,23 +13,21 @@ import {
   Scale,
   Users,
   Video,
-  Layers,
-  ChevronRight,
+  Star,
+  ExternalLink,
 } from 'lucide-react';
 import { Movie } from '../../types/movie';
 import { useCurrency } from '../../context/CurrencyContext';
 import { useWatchlist, useComparison } from '../../context/WatchlistContext';
 import { VerdictBadge } from '../common/VerdictBadge';
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  AreaChart,
-  Area,
 } from 'recharts';
 
 interface MovieDetailModalProps {
@@ -43,7 +41,7 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
   onClose,
   onOpenCompare,
 }) => {
-  const { format, currency, getRawValue } = useCurrency();
+  const { format, currency } = useCurrency();
   const { isInWatchlist, toggleWatchlist } = useWatchlist();
   const { isInCompare, addToCompare, removeFromCompare } = useComparison();
   const [copied, setCopied] = useState(false);
@@ -55,13 +53,10 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
   const isCompared = isInCompare(movie.id);
 
   const handleShare = () => {
-    const text = `🎬 ${movie.title} (${movie.releaseYear})\n💰 Worldwide Gross: ${format(
+    const text = `${movie.title} (${movie.releaseYear}) | Worldwide: ${format(
       movie.worldwideGrossUSD,
       movie.worldwideGrossINR
-    )}\n🏆 Verdict: ${movie.verdict}\n⚡ Opening Day: ${format(
-      movie.openingDayGrossUSD,
-      movie.openingDayGrossINR
-    )}\nTracked via CineMetrix Global!`;
+    )} | Verdict: ${movie.verdict} | CineMetrix Global`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -76,9 +71,8 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
     }
   };
 
-  // Prepare chart data for Day-wise trajectory
   const chartData = movie.dayWiseTrajectory.map((record) => ({
-    name: `Day ${record.day}`,
+    name: `D${record.day}`,
     dayName: record.dayName,
     daily: currency === 'INR' ? record.dailyGrossINR : record.dailyGrossUSD,
     cumulative: currency === 'INR' ? record.cumulativeINR : record.cumulativeUSD,
@@ -89,287 +83,260 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
   const currencyUnit = currency === 'INR' ? '₹ Cr' : '$ M';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-150">
       <div className="fixed inset-0" onClick={onClose} aria-hidden="true" />
 
-      <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col my-auto max-h-[92vh]">
+      <div className="relative w-full max-w-4xl bg-[#0e1015] border border-[#222634] rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col my-auto max-h-[92vh]">
         {/* Backdrop Banner Header */}
-        <div className="relative h-48 sm:h-64 w-full bg-slate-950 shrink-0 overflow-hidden">
+        <div className="relative h-44 sm:h-56 w-full bg-[#07080b] shrink-0 overflow-hidden">
           <img
             src={movie.backdropUrl}
             alt={movie.title}
-            className="w-full h-full object-cover opacity-35 filter brightness-75 scale-105"
+            className="w-full h-full object-cover opacity-25 filter grayscale contrast-125"
             onError={(e) => {
               (e.target as HTMLImageElement).src =
                 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200';
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0e1015] via-[#0e1015]/70 to-transparent" />
 
-          {/* Close & Action Buttons */}
-          <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
+          {/* Top Actions */}
+          <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 z-20">
             <button
               onClick={handleShare}
-              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 backdrop-blur-md border border-slate-700 transition-colors flex items-center gap-1.5 text-xs font-medium"
-              title="Copy Summary to Clipboard"
+              className="h-8 px-2.5 rounded-lg bg-[#151821]/90 hover:bg-[#1d222e] text-slate-300 border border-[#262c3d] transition-colors flex items-center gap-1.5 text-xs font-mono"
+              title="Copy Summary"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
-              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{copied ? 'COPIED' : 'SHARE'}</span>
             </button>
 
             <button
               onClick={() => toggleWatchlist(movie.id)}
-              className={`p-2 rounded-xl backdrop-blur-md border transition-colors ${
+              className={`h-8 px-2.5 rounded-lg border transition-colors flex items-center gap-1 text-xs font-mono ${
                 isBookmarked
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                  : 'bg-slate-900/80 text-slate-200 hover:bg-slate-800 border-slate-700'
+                  ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
+                  : 'bg-[#151821]/90 text-slate-300 hover:bg-[#1d222e] border-[#262c3d]'
               }`}
               title={isBookmarked ? 'Remove from Watchlist' : 'Add to Watchlist'}
             >
-              <Bookmark className="w-4 h-4" fill={isBookmarked ? 'currentColor' : 'none'} />
+              <Bookmark className="w-3.5 h-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
+              <span className="hidden sm:inline">{isBookmarked ? 'SAVED' : 'SAVE'}</span>
             </button>
 
             <button
               onClick={handleToggleCompare}
-              className={`p-2 rounded-xl backdrop-blur-md border transition-colors flex items-center gap-1.5 text-xs font-medium ${
+              className={`h-8 px-2.5 rounded-lg border transition-colors flex items-center gap-1.5 text-xs font-mono ${
                 isCompared
-                  ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold'
-                  : 'bg-slate-900/80 text-slate-200 hover:bg-slate-800 border-slate-700'
+                  ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
+                  : 'bg-[#151821]/90 text-slate-300 hover:bg-[#1d222e] border-[#262c3d]'
               }`}
-              title="Add to Box Office Arena Compare"
+              title="Add to Arena Comparison"
             >
-              <Scale className="w-4 h-4" />
-              <span className="hidden sm:inline">{isCompared ? 'In Compare' : 'Compare'}</span>
+              <Scale className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isCompared ? 'COMPARING' : 'COMPARE'}</span>
             </button>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 backdrop-blur-md border border-slate-700 transition-colors"
+              className="w-8 h-8 rounded-lg bg-[#151821]/90 hover:bg-[#1d222e] text-slate-300 border border-[#262c3d] transition-colors flex items-center justify-center"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Quick Header Details Overlay */}
-          <div className="absolute bottom-4 left-4 right-4 flex items-end gap-4 z-10">
+          {/* Title and Key Details */}
+          <div className="absolute bottom-3 left-4 right-4 flex items-end gap-3.5 z-10">
             <img
               src={movie.posterUrl}
               alt={movie.title}
-              className="w-20 h-28 sm:w-28 sm:h-40 object-cover rounded-xl shadow-2xl border-2 border-slate-700 shrink-0 bg-slate-950"
+              className="w-18 h-26 sm:w-24 sm:h-34 object-cover rounded-lg shadow-xl border border-[#2b3144] shrink-0 bg-[#07080b]"
               onError={(e) => {
                 (e.target as HTMLImageElement).src =
                   'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=300';
               }}
             />
-            <div className="min-w-0 flex-1 pb-1">
+            <div className="min-w-0 flex-1 pb-0.5">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-[#1c202c] text-slate-300 border border-[#2b3144]">
                   {movie.industry}
                 </span>
-                <span className="text-xs text-slate-400 font-medium">
-                  {movie.language}
-                </span>
-                <span className="text-xs text-slate-400 font-medium">•</span>
-                <span className="text-xs text-slate-400 font-medium">{movie.certification}</span>
+                <span className="text-[11px] font-mono text-slate-400">{movie.language}</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-[11px] font-mono text-slate-400">{movie.certification}</span>
                 <VerdictBadge verdict={movie.verdict} size="sm" />
               </div>
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight truncate font-serif">
+              <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight truncate">
                 {movie.title}
               </h2>
-              {movie.originalTitle && movie.originalTitle !== movie.title && (
-                <p className="text-xs text-slate-400 font-medium">{movie.originalTitle}</p>
-              )}
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 mt-1">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
+              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 mt-1">
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <Calendar className="w-3 h-3 text-slate-500" />
                   {movie.releaseDate}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-amber-400" />
-                  {movie.runtimeMinutes} min
+                <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <Clock className="w-3 h-3 text-slate-500" />
+                  {movie.runtimeMinutes}m
                 </span>
-                <span className="flex items-center gap-1 text-amber-300 font-semibold">
-                  ⭐ {movie.imdbRating} / 10
+                <span className="flex items-center gap-1 font-mono text-[11px] text-amber-300 font-semibold">
+                  <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                  {movie.imdbRating.toFixed(1)}/10
+                </span>
+                <span className="text-slate-500 font-mono text-[11px]">
+                  Director: <span className="text-slate-300">{movie.director}</span>
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Worldwide Headline Scorecard */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-4 bg-slate-950 border-b border-slate-800">
-          <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+        {/* Headline Trade Metric Strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[#1c202c] border-b border-[#1c202c]">
+          <div className="p-3.5 bg-[#0e1015]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
               Worldwide Gross
             </span>
-            <div className="text-lg sm:text-xl font-black text-amber-400 font-serif mt-0.5">
+            <div className="text-base sm:text-lg font-bold font-mono text-amber-400 mt-0.5">
               {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
             </div>
-            <span className="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
+            <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
               <TrendingUp className="w-3 h-3" /> Lifetime Theatrical
             </span>
           </div>
 
-          <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-              Domestic Gross
+          <div className="p-3.5 bg-[#0e1015]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
+              Domestic Circuit
             </span>
-            <div className="text-lg sm:text-xl font-black text-slate-100 font-serif mt-0.5">
+            <div className="text-base sm:text-lg font-bold font-mono text-slate-100 mt-0.5">
               {format(movie.domesticGrossUSD, movie.domesticGrossINR)}
             </div>
-            <span className="text-[10px] text-slate-400">
+            <span className="text-[10px] font-mono text-slate-500 mt-0.5 block">
               {((movie.domesticGrossUSD / movie.worldwideGrossUSD) * 100).toFixed(1)}% of total
             </span>
           </div>
 
-          <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-              Overseas Gross
+          <div className="p-3.5 bg-[#0e1015]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
+              Overseas Circuit
             </span>
-            <div className="text-lg sm:text-xl font-black text-slate-100 font-serif mt-0.5">
+            <div className="text-base sm:text-lg font-bold font-mono text-slate-100 mt-0.5">
               {format(movie.overseasGrossUSD, movie.overseasGrossINR)}
             </div>
-            <span className="text-[10px] text-slate-400">
+            <span className="text-[10px] font-mono text-slate-500 mt-0.5 block">
               {((movie.overseasGrossUSD / movie.worldwideGrossUSD) * 100).toFixed(1)}% of total
             </span>
           </div>
 
-          <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-              Opening Day Gross
+          <div className="p-3.5 bg-[#0e1015]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
+              Opening Day
             </span>
-            <div className="text-lg sm:text-xl font-black text-cyan-400 font-serif mt-0.5">
+            <div className="text-base sm:text-lg font-bold font-mono text-cyan-400 mt-0.5">
               {format(movie.openingDayGrossUSD, movie.openingDayGrossINR)}
             </div>
-            <span className="text-[10px] text-cyan-300">
-              Weekend: {format(movie.openingWeekendUSD, movie.openingWeekendINR, { compact: true })}
+            <span className="text-[10px] font-mono text-slate-400 mt-0.5 block">
+              W/E: {format(movie.openingWeekendUSD, movie.openingWeekendINR, { compact: true })}
             </span>
           </div>
         </div>
 
-        {/* Tabs Bar */}
-        <div className="px-4 border-b border-slate-800 bg-slate-900 flex items-center gap-2 overflow-x-auto text-xs font-semibold">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`py-3 px-3 border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'overview'
-                ? 'border-amber-400 text-amber-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Overview & Cast
-          </button>
-          <button
-            onClick={() => setActiveTab('daywise')}
-            className={`py-3 px-3 border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'daywise'
-                ? 'border-amber-400 text-amber-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <TrendingUp className="w-3.5 h-3.5" /> Day-Wise Trajectory & Graph
-          </button>
-          <button
-            onClick={() => setActiveTab('territories')}
-            className={`py-3 px-3 border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'territories'
-                ? 'border-amber-400 text-amber-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Globe className="w-3.5 h-3.5" /> Territory Breakdown
-          </button>
-          <button
-            onClick={() => setActiveTab('financials')}
-            className={`py-3 px-3 border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'financials'
-                ? 'border-amber-400 text-amber-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <DollarSign className="w-3.5 h-3.5" /> Budget, ROI & Profitability
-          </button>
+        {/* Tab Navigation */}
+        <div className="px-4 border-b border-[#1c202c] bg-[#0a0c10] flex items-center gap-1 overflow-x-auto">
+          {[
+            { id: 'overview', label: 'Overview & Cast' },
+            { id: 'daywise', label: 'Day-Wise Trajectory' },
+            { id: 'territories', label: 'Territory Breakdown' },
+            { id: 'financials', label: 'Financials & ROI' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`py-3 px-3.5 text-xs font-mono font-medium border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'border-amber-400 text-amber-400'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Tab Content Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
-            <div className="space-y-6">
-              {/* Synopsis */}
+            <div className="space-y-5">
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-1.5">
                   Synopsis
                 </h3>
-                <p className="text-sm leading-relaxed text-slate-200 bg-slate-950/50 p-4 rounded-xl border border-slate-800">
+                <p className="text-xs sm:text-sm leading-relaxed text-slate-300 bg-[#07080b] p-3.5 rounded-xl border border-[#1c202c]">
                   {movie.synopsis}
                 </p>
               </div>
 
-              {/* Cast & Crew Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                    <Video className="w-3.5 h-3.5" /> Direction & Production
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div className="bg-[#07080b] p-3.5 rounded-xl border border-[#1c202c] space-y-2">
+                  <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                    <Video className="w-3.5 h-3.5 text-slate-500" /> Direction & Production
                   </h4>
                   <div className="text-xs text-slate-300">
-                    <span className="text-slate-500 font-medium">Director: </span>
+                    <span className="text-slate-500 font-mono text-[11px]">Director: </span>
                     <span className="font-semibold text-white">{movie.director}</span>
                   </div>
                   <div className="text-xs text-slate-300">
-                    <span className="text-slate-500 font-medium">Producers: </span>
+                    <span className="text-slate-500 font-mono text-[11px]">Producers: </span>
                     <span>{movie.producers.join(', ')}</span>
                   </div>
                   <div className="text-xs text-slate-300">
-                    <span className="text-slate-500 font-medium">Genres: </span>
-                    <span className="text-amber-300">{movie.genres.join(', ')}</span>
+                    <span className="text-slate-500 font-mono text-[11px]">Genres: </span>
+                    <span className="text-amber-300 font-mono text-[11px]">{movie.genres.join(', ')}</span>
                   </div>
-                  <div className="text-xs text-slate-300">
-                    <span className="text-slate-500 font-medium">Screens: </span>
+                  <div className="text-xs text-slate-300 font-mono text-[11px]">
+                    <span className="text-slate-500">Screens: </span>
                     <span>
-                      {movie.screensCount.domestic.toLocaleString()} Domestic +{' '}
-                      {movie.screensCount.overseas.toLocaleString()} Overseas (Total:{' '}
-                      {movie.screensCount.worldwideTotal.toLocaleString()})
+                      {movie.screensCount.domestic.toLocaleString()} Dom +{' '}
+                      {movie.screensCount.overseas.toLocaleString()} OS ({movie.screensCount.worldwideTotal.toLocaleString()} Total)
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5" /> Leading Cast
+                <div className="bg-[#07080b] p-3.5 rounded-xl border border-[#1c202c] space-y-2">
+                  <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-slate-500" /> Leading Cast
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {movie.cast.map((actor, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 font-medium"
+                        className="px-2.5 py-1 rounded-md bg-[#13161f] border border-[#202534] text-xs text-slate-300"
                       >
                         {actor}
                       </span>
                     ))}
                   </div>
-                  <div className="pt-2 text-xs text-slate-400">
+                  <div className="pt-2 text-[11px] font-mono text-slate-400">
                     Theatrical Multiplier:{' '}
-                    <span className="font-bold text-emerald-400">{movie.multiplier}x</span> (Weekend to
-                    Lifetime holding index)
+                    <span className="font-bold text-emerald-400">{movie.multiplier}x</span> (Weekend-to-lifetime index)
                   </div>
                 </div>
               </div>
 
-              {/* Milestones & Records */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
-                  <Award className="w-4 h-4" /> Box Office Records & Milestones
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5 text-amber-400" /> Box Office Records & Milestones
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {movie.milestones.map((m, idx) => (
                     <div
                       key={idx}
-                      className="p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl text-xs text-amber-200/90 flex items-start gap-2"
+                      className="p-3 bg-[#07080b] border border-[#1c202c] rounded-lg text-xs text-slate-300 flex items-start gap-2"
                     >
-                      <span className="text-amber-400 font-bold shrink-0">✦</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
                       <span>{m}</span>
                     </div>
                   ))}
@@ -380,36 +347,37 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
 
           {/* TAB 2: DAY-WISE TRAJECTORY */}
           {activeTab === 'daywise' && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Cumulative Box Office Growth Curve ({currencyUnit})
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-[10px] font-mono uppercase tracking-wider text-slate-500">
+                    Cumulative Box Office Trajectory ({currencyUnit})
                   </h3>
-                  <span className="text-xs text-slate-400 font-mono">
-                    Lifetime: {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
+                  <span className="text-xs font-mono text-slate-400">
+                    Total: {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
                   </span>
                 </div>
 
-                <div className="h-64 w-full bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <div className="h-56 w-full bg-[#07080b] p-3 rounded-xl border border-[#1c202c]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <defs>
-                        <linearGradient id="colorCumulative" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                        <linearGradient id="colorCumulativeModal" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#eab308" stopOpacity={0.25} />
+                          <stop offset="95%" stopColor="#eab308" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                      <XAxis dataKey="name" stroke="#64748b" textAnchor="end" fontSize={11} />
-                      <YAxis stroke="#64748b" fontSize={11} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1c202c" />
+                      <XAxis dataKey="name" stroke="#475569" fontSize={10} fontFamily="monospace" />
+                      <YAxis stroke="#475569" fontSize={10} fontFamily="monospace" />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: '#0f172a',
-                          borderColor: '#334155',
+                          backgroundColor: '#0a0c10',
+                          borderColor: '#262c3d',
                           borderRadius: '8px',
                           color: '#f8fafc',
-                          fontSize: '12px',
+                          fontSize: '11px',
+                          fontFamily: 'monospace',
                         }}
                         formatter={(val: any) => [
                           `${currency === 'INR' ? '₹' : '$'}${Number(val).toLocaleString()} ${currencyUnit}`,
@@ -419,24 +387,23 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
                       <Area
                         type="monotone"
                         dataKey="cumulative"
-                        stroke="#f59e0b"
-                        strokeWidth={2.5}
+                        stroke="#eab308"
+                        strokeWidth={1.5}
                         fillOpacity={1}
-                        fill="url(#colorCumulative)"
+                        fill="url(#colorCumulativeModal)"
                       />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              {/* Day-Wise Table */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-2">
                   Daily Box Office Log
                 </h4>
-                <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+                <div className="overflow-x-auto rounded-xl border border-[#1c202c] bg-[#07080b]">
                   <table className="w-full text-xs text-left">
-                    <thead className="bg-slate-900/80 text-slate-400 border-b border-slate-800 font-semibold uppercase text-[10px]">
+                    <thead className="bg-[#0e1015] text-slate-400 border-b border-[#1c202c] font-mono uppercase text-[10px]">
                       <tr>
                         <th className="p-2.5">Timeline</th>
                         <th className="p-2.5">Date</th>
@@ -446,29 +413,29 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
                         <th className="p-2.5">Trade Remarks</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-[#181b24] font-mono">
                       {movie.dayWiseTrajectory.map((record) => (
                         <tr
                           key={record.day}
-                          className={`hover:bg-slate-900/60 ${
-                            record.isWeekend ? 'bg-amber-500/[0.02]' : ''
+                          className={`hover:bg-[#12151e] ${
+                            record.isWeekend ? 'bg-[#151821]/40' : ''
                           }`}
                         >
                           <td className="p-2.5 font-bold text-slate-200">Day {record.day}</td>
-                          <td className="p-2.5 text-slate-400">{record.date}</td>
-                          <td className="p-2.5 text-slate-300">
+                          <td className="p-2.5 text-slate-400 text-[11px]">{record.date}</td>
+                          <td className="p-2.5 text-slate-300 text-[11px]">
                             {record.dayName}{' '}
                             {record.isWeekend && (
-                              <span className="text-[10px] text-amber-400 font-medium">(W/E)</span>
+                              <span className="text-[10px] text-amber-400 font-semibold">(W/E)</span>
                             )}
                           </td>
-                          <td className="p-2.5 text-right font-medium text-slate-200">
+                          <td className="p-2.5 text-right text-slate-300">
                             {format(record.dailyGrossUSD, record.dailyGrossINR)}
                           </td>
                           <td className="p-2.5 text-right font-bold text-amber-400">
                             {format(record.cumulativeUSD, record.cumulativeINR)}
                           </td>
-                          <td className="p-2.5 text-slate-400 text-[11px] max-w-xs truncate">
+                          <td className="p-2.5 text-slate-400 text-[11px] max-w-xs truncate font-sans">
                             {record.notes || '-'}
                           </td>
                         </tr>
@@ -484,35 +451,34 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
           {activeTab === 'territories' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-slate-500">
                   Territory & Market Share Breakdown
                 </h3>
-                <span className="text-xs text-slate-500">
-                  Domestic vs Overseas Circuits
+                <span className="text-xs font-mono text-slate-500">
+                  Domestic vs International Circuits
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {movie.territoryBreakdown.map((t, idx) => (
                   <div
                     key={idx}
-                    className="p-3 bg-slate-950/70 rounded-xl border border-slate-800 space-y-1.5"
+                    className="p-3 bg-[#07080b] rounded-xl border border-[#1c202c] space-y-1.5"
                   >
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold text-slate-200">{t.territory}</span>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-amber-400">
+                        <span className="font-mono font-bold text-amber-400">
                           {format(t.grossUSD, t.grossINR)}
                         </span>
-                        <span className="text-[11px] text-slate-400 font-mono w-12 text-right">
+                        <span className="text-[11px] font-mono text-slate-500 w-12 text-right">
                           {t.percentage.toFixed(1)}%
                         </span>
                       </div>
                     </div>
-                    {/* Visual Progress Bar */}
-                    <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-[#151821] h-1.5 rounded-full overflow-hidden">
                       <div
-                        className="bg-gradient-to-r from-amber-500 to-amber-300 h-full rounded-full transition-all duration-500"
+                        className="bg-amber-400 h-full rounded-full transition-all duration-300"
                         style={{ width: `${Math.min(t.percentage, 100)}%` }}
                       />
                     </div>
@@ -524,69 +490,65 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
 
           {/* TAB 4: FINANCIALS & ROI */}
           {activeTab === 'financials' && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+                <div className="p-3.5 bg-[#07080b] rounded-xl border border-[#1c202c]">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
                     Production Budget
                   </span>
-                  <div className="text-lg font-black text-slate-100 font-serif mt-1">
+                  <div className="text-base font-bold font-mono text-slate-100 mt-1">
                     {format(
                       movie.financials.productionBudgetUSD,
                       movie.financials.productionBudgetINR
                     )}
                   </div>
-                  <span className="text-[11px] text-slate-400 mt-0.5 block">Estimated Cost</span>
+                  <span className="text-[11px] font-mono text-slate-500 mt-0.5 block">Estimated Negative Cost</span>
                 </div>
 
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+                <div className="p-3.5 bg-[#07080b] rounded-xl border border-[#1c202c]">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
                     Theatrical Share
                   </span>
-                  <div className="text-lg font-black text-emerald-400 font-serif mt-1">
+                  <div className="text-base font-bold font-mono text-emerald-400 mt-1">
                     {format(
                       movie.financials.theatricalShareUSD,
                       movie.financials.theatricalShareINR
                     )}
                   </div>
-                  <span className="text-[11px] text-slate-400 mt-0.5 block">
-                    Distributor Net Share
-                  </span>
+                  <span className="text-[11px] font-mono text-slate-500 mt-0.5 block">Distributor Realization</span>
                 </div>
 
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-                    Net Theatrical ROI
+                <div className="p-3.5 bg-[#07080b] rounded-xl border border-[#1c202c]">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
+                    Theatrical ROI
                   </span>
-                  <div className="text-lg font-black text-amber-400 font-serif mt-1">
+                  <div className="text-base font-bold font-mono text-amber-400 mt-1">
                     +{movie.financials.roiPercentage.toFixed(0)}%
                   </div>
-                  <span className="text-[11px] text-slate-400 mt-0.5 block">Return on Investment</span>
+                  <span className="text-[11px] font-mono text-slate-500 mt-0.5 block">Return on Investment</span>
                 </div>
               </div>
 
-              {/* Profitability Calculation Explanation */}
-              <div className="p-4 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2 text-xs text-slate-300">
-                <h4 className="font-bold text-white uppercase tracking-wider text-[11px]">
+              <div className="p-4 bg-[#07080b] rounded-xl border border-[#1c202c] space-y-2 text-xs text-slate-300">
+                <h4 className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold">
                   Trade Profitability Analysis
                 </h4>
                 <p className="leading-relaxed text-slate-400">
-                  To achieve commercial breakeven, the theatrical release needed to return approximately{' '}
-                  <strong className="text-white">
+                  To achieve commercial breakeven, the theatrical release required approximately{' '}
+                  <strong className="text-white font-mono">
                     {format(
                       movie.financials.breakevenTargetUSD,
                       movie.financials.breakevenTargetINR
                     )}
                   </strong>{' '}
-                  in worldwide theatrical distributor share. With an actual theatrical distributor share
-                  of{' '}
-                  <strong className="text-emerald-400">
+                  in worldwide theatrical distributor share. With actual theatrical realization of{' '}
+                  <strong className="text-emerald-400 font-mono">
                     {format(
                       movie.financials.theatricalShareUSD,
                       movie.financials.theatricalShareINR
                     )}
                   </strong>
-                  , this film has earned an official verdict of:
+                  , this film has attained an official verdict of:
                 </p>
                 <div className="pt-2">
                   <VerdictBadge verdict={movie.verdict} size="md" />
@@ -597,28 +559,28 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <span>Currency:</span>
+        <div className="p-3.5 border-t border-[#1c202c] bg-[#0a0c10] flex items-center justify-between text-xs text-slate-400">
+          <div className="flex items-center gap-2 font-mono text-[11px]">
+            <span className="text-slate-500">CURRENCY:</span>
             <span className="font-bold text-amber-400">{currency}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handleToggleCompare}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg font-mono text-xs font-semibold transition-colors ${
                 isCompared
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+                  ? 'bg-amber-400 text-slate-950'
+                  : 'bg-[#151821] hover:bg-[#1d222e] text-slate-300 border border-[#262c3d]'
               }`}
             >
-              {isCompared ? 'Remove from Compare' : 'Add to Compare'}
+              {isCompared ? 'Remove from Compare' : '+ Add to Compare'}
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg transition-colors"
+              className="px-4 py-1.5 bg-slate-200 hover:bg-white text-slate-950 font-bold font-mono text-xs rounded-lg transition-colors"
             >
-              Done
+              Close
             </button>
           </div>
         </div>

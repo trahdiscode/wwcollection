@@ -2,41 +2,52 @@
 
 @layer base {
   :root {
-    --bg-primary: #080c14;
-    --bg-secondary: #0f172a;
-    --bg-card: #111827;
-    --border-color: #1e293b;
+    --canvas: #090a0d;
+    --surface-1: #111317;
+    --surface-2: #16181f;
+    --surface-3: #1c1f28;
+    --border-subtle: #1e2129;
+    --border-strong: #2a2e39;
+    --text-primary: #f4f5f8;
+    --text-secondary: #8e95a2;
+    --text-tertiary: #5d6370;
+    --accent: #d99b26;
+    --accent-hover: #ebb13e;
   }
 
   body {
-    background-color: #080c14;
-    color: #f1f5f9;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--canvas);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Inter", "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "tnum" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
-  h1, h2, h3, .font-serif {
-    font-family: 'Cinzel', Georgia, serif;
-    letter-spacing: -0.01em;
+  /* Standard numeric alignment for financial and box office tables */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
   }
 
-  code, pre, .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
 }
 
-/* Custom scrollbars */
+/* Restrained minimalist scrollbars */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #080c14;
+  background: #090a0d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #1e2129;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #2a2e39;
 }

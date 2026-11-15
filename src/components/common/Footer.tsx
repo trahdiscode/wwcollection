@@ -1,5 +1,5 @@
 import React from 'react';
-import { Film, Globe, ShieldCheck, Database, Award } from 'lucide-react';
+import { Film, Globe } from 'lucide-react';
 import { NavTab } from './Navbar';
 
 interface FooterProps {
@@ -8,52 +8,52 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
   return (
-    <footer className="w-full bg-slate-950 border-t border-slate-800 text-slate-400 text-xs mt-20">
+    <footer className="w-full bg-[#07080b] border-t border-[#1c1f28] text-slate-400 text-xs mt-12 sm:mt-16">
       {/* Top Banner Stats */}
-      <div className="border-b border-slate-900 bg-slate-900/40 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div className="border-b border-[#14161f] py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <span className="text-2xl font-black text-amber-400 font-serif">10+</span>
-            <p className="text-[11px] text-slate-400 mt-0.5">Film Industries Tracked</p>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-amber-400">10+</span>
+            <p className="text-[11px] font-mono text-slate-500 mt-0.5">Film Industries Tracked</p>
           </div>
           <div>
-            <span className="text-2xl font-black text-slate-100 font-serif">$35B+</span>
-            <p className="text-[11px] text-slate-400 mt-0.5">Global Box Office Catalogued</p>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-slate-200">$35B+</span>
+            <p className="text-[11px] font-mono text-slate-500 mt-0.5">Theatrical Volume Catalogued</p>
           </div>
           <div>
-            <span className="text-2xl font-black text-emerald-400 font-serif">100%</span>
-            <p className="text-[11px] text-slate-400 mt-0.5">Verified Trade & Producer Data</p>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-emerald-400">100%</span>
+            <p className="text-[11px] font-mono text-slate-500 mt-0.5">Verified Producer & Trade Data</p>
           </div>
           <div>
-            <span className="text-2xl font-black text-cyan-400 font-serif">Dual Currency</span>
-            <p className="text-[11px] text-slate-400 mt-0.5">Instant USD ($M) & INR (₹ Cr) Conversion</p>
+            <span className="text-xl sm:text-2xl font-bold font-mono text-cyan-400">Multi-FX</span>
+            <p className="text-[11px] font-mono text-slate-500 mt-0.5">Instant USD ($M) & INR (₹ Cr) Conversion</p>
           </div>
         </div>
       </div>
 
       {/* Main Footer Links & Information */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-3 md:col-span-1">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-bold">
-              <Film className="w-4 h-4" />
+            <div className="w-6 h-6 rounded bg-amber-400 flex items-center justify-center text-slate-950 font-bold">
+              <Film className="w-3.5 h-3.5" />
             </div>
-            <span className="text-base font-bold text-white font-serif">CINEMETRIX GLOBAL</span>
+            <span className="text-sm font-bold tracking-tight text-white font-mono">CINEMETRIX GLOBAL</span>
           </div>
-          <p className="text-xs leading-relaxed text-slate-400">
-            The definitive entertainment intelligence platform for tracking worldwide theatrical box-office collections, historical records, multi-industry performance, and movie analytics.
+          <p className="text-xs leading-relaxed text-slate-500">
+            Authoritative entertainment data platform for tracking worldwide theatrical collections, historical records, pan-industry comparative analytics, and global movie developments.
           </p>
-          <div className="flex items-center gap-2 text-[11px] text-amber-400/90 font-medium pt-1">
-            <Globe className="w-3.5 h-3.5" /> Covering Hollywood, Pan-India & International Cinema
+          <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 pt-1">
+            <Globe className="w-3 h-3 text-slate-500" /> Hollywood, Bollywood, Tollywood, Kollywood, Hallyu & International
           </div>
         </div>
 
         {/* Navigation Shortcuts */}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">
-            Platform Sections
+          <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-3">
+            Core Modules
           </h4>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5 text-slate-400">
             <li>
               <button
                 onClick={() => onSelectTab('hub')}
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
                 onClick={() => onSelectTab('analytics')}
                 className="hover:text-amber-400 transition-colors"
               >
-                Market Share & Multiplier Analytics
+                Trade Intelligence & Analytics
               </button>
             </li>
             <li>
@@ -99,50 +99,55 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
                 onClick={() => onSelectTab('news')}
                 className="hover:text-amber-400 transition-colors"
               >
-                Trade Reports & Release Calendar
+                Trade Dispatches & Calendar
               </button>
             </li>
           </ul>
         </div>
 
-        {/* Covered Industries */}
+        {/* Trade Industry Coverage */}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">
-            Covered Film Markets
+          <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-3">
+            Covered Industries
           </h4>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <span className="text-slate-300">Hollywood (USA)</span>
-            <span className="text-slate-300">Bollywood (Hindi)</span>
-            <span className="text-slate-300">Tollywood (Telugu)</span>
-            <span className="text-slate-300">Kollywood (Tamil)</span>
-            <span className="text-slate-300">Mollywood (Malayalam)</span>
-            <span className="text-slate-300">Sandalwood (Kannada)</span>
-            <span className="text-slate-300">Korean Cinema (Hallyu)</span>
-            <span className="text-slate-300">Japanese Anime & China</span>
+          <div className="grid grid-cols-2 gap-1.5 text-slate-500 font-mono text-[11px]">
+            <span>• Hollywood (USA)</span>
+            <span>• Bollywood (Hindi)</span>
+            <span>• Tollywood (Telugu)</span>
+            <span>• Kollywood (Tamil)</span>
+            <span>• Mollywood (Malayalam)</span>
+            <span>• Sandalwood (Kannada)</span>
+            <span>• Hallyu (Korean)</span>
+            <span>• Chinese Cinema</span>
+            <span>• Japanese Cinema</span>
+            <span>• European Circuits</span>
           </div>
         </div>
 
-        {/* Methodology & Verification */}
-        <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3 flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" /> Trade Methodology
+        {/* Methodology & Currency Note */}
+        <div className="space-y-2">
+          <h4 className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Data Methodology
           </h4>
-          <p className="text-[11px] leading-relaxed text-slate-400 space-y-1">
-            <span>
-              All collections represent <strong>theatrical gross receipts</strong> (including entertainment taxes), converted using standardized historical forex rates.
-            </span>
-            <span className="block mt-1 text-slate-400">
-              Indian box office metrics report both Gross and Nett equivalents across standard circuits (AP/TG, Hindi Belt, Tamil Nadu, Karnataka, Kerala, and Overseas).
-            </span>
+          <p className="text-[11px] leading-relaxed text-slate-500">
+            Collections are compiled from official producer statements, trade tracking bodies (Sacnilk, Comscore, Box Office Mojo, Rentrak), and verified distributor returns.
           </p>
+          <div className="pt-2 text-[10px] font-mono text-slate-600">
+            FX Reference: 1 USD = 83.5 INR • Tabular numbers aligned to standard ISO reporting.
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
-        <p>© 2024–2026 CineMetrix Global. Built for cinephiles, movie industry analysts, and box-office enthusiasts.</p>
-        <p className="flex items-center gap-1">
-          Designed with precision & performance.
-        </p>
+      {/* Bottom Bar */}
+      <div className="border-t border-[#14161f] py-4 bg-[#050608]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600 font-mono text-[11px]">
+          <div>
+            © {new Date().getFullYear()} CineMetrix Global. Worldwide Movie Box Office Intelligence.
+          </div>
+          <div className="flex items-center gap-4">
+            <span>Built for film enthusiasts, analysts & trade researchers</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

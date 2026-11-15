@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Calendar, TrendingUp, ArrowRight, Play, Eye } from 'lucide-react';
+import { ArrowRight, Eye, Calendar, Clock, Film } from 'lucide-react';
 import { Movie } from '../../types/movie';
 import { useCurrency } from '../../context/CurrencyContext';
 import { VerdictBadge } from '../common/VerdictBadge';
@@ -8,12 +8,14 @@ interface HeroSpotlightProps {
   movies: Movie[];
   onSelectMovie: (movie: Movie) => void;
   onExploreClick: () => void;
+  className?: string;
 }
 
 export const HeroSpotlight: React.FC<HeroSpotlightProps> = ({
   movies,
   onSelectMovie,
   onExploreClick,
+  className,
 }) => {
   const { format } = useCurrency();
   const spotlightMovies = movies.filter((m) =>
@@ -25,7 +27,7 @@ export const HeroSpotlight: React.FC<HeroSpotlightProps> = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % spotlightMovies.length);
-    }, 6000);
+    }, 7000);
     return () => clearInterval(timer);
   }, [spotlightMovies.length]);
 
@@ -33,112 +35,120 @@ export const HeroSpotlight: React.FC<HeroSpotlightProps> = ({
   const current = spotlightMovies[currentIndex] || spotlightMovies[0];
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
-      {/* Background Image Backdrop */}
+    <div className={`relative w-full rounded-2xl overflow-hidden border border-[#1d2028] bg-[#0c0d12] shadow-2xl ${className || ''}`}>
+      {/* Cinematic Background Scrim */}
       <div className="absolute inset-0">
         <img
           src={current.backdropUrl}
           alt={current.title}
-          className="w-full h-full object-cover opacity-25 filter brightness-75 scale-105 transition-all duration-1000 ease-out"
+          className="w-full h-full object-cover opacity-20 filter brightness-90 scale-100 transition-opacity duration-700 ease-out"
           onError={(e) => {
             (e.target as HTMLImageElement).src =
               'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200';
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0c0d12] via-[#0c0d12]/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d12] via-transparent to-transparent" />
       </div>
 
-      {/* Content Layer */}
-      <div className="relative z-10 p-6 sm:p-8 md:p-12 max-w-3xl flex flex-col justify-between min-h-[420px] sm:min-h-[480px]">
+      {/* Content Container */}
+      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between min-h-[420px] sm:min-h-[460px] md:min-h-[480px]">
         <div>
-          {/* Top Pill */}
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/10">
-              <Sparkles className="w-3.5 h-3.5" /> Spotlight Box Office Juggernaut
-            </span>
-            <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-900/80 text-slate-300 border border-slate-700">
+          {/* Metadata Row */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-3.5 sm:mb-4 text-xs text-[#8a92a1]">
+            <span className="font-semibold text-[#f4f5f8] uppercase tracking-wider text-[11px] bg-[#1a1c24] px-2.5 py-0.5 rounded border border-[#262a36]">
               {current.industry}
             </span>
+            <span className="text-[#4b5563]">·</span>
+            <span>{current.language}</span>
+            <span className="text-[#4b5563]">·</span>
+            <span>{current.releaseYear}</span>
+            <span className="text-[#4b5563]">·</span>
+            <span>{current.certification}</span>
             <VerdictBadge verdict={current.verdict} size="sm" />
           </div>
 
-          {/* Title */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-none font-serif mb-2">
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-2 sm:mb-2.5">
             {current.title}
           </h1>
 
-          {/* Original title if different */}
           {current.originalTitle && current.originalTitle !== current.title && (
-            <p className="text-sm font-medium text-amber-300/80 mb-3">{current.originalTitle}</p>
+            <p className="text-sm sm:text-base font-normal text-[#9ca3af] mb-3 sm:mb-4 italic">
+              {current.originalTitle}
+            </p>
           )}
 
           {/* Synopsis */}
-          <p className="text-xs sm:text-sm text-slate-300 line-clamp-3 sm:line-clamp-2 max-w-2xl leading-relaxed mb-6">
+          <p className="text-xs sm:text-sm md:text-[15px] text-[#9ca3af] line-clamp-2 sm:line-clamp-3 max-w-2xl lg:max-w-3xl leading-relaxed mb-6 sm:mb-8 font-normal">
             {current.synopsis}
           </p>
 
-          {/* Key Figures Marquee */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mb-6">
-            <div className="p-3 bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-                Worldwide Lifetime
+          {/* Clean Financial Stats Strip with hairline vertical dividers */}
+          <div className="inline-flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 bg-[#12141a]/90 backdrop-blur-md px-4 sm:px-6 py-3.5 sm:py-4 rounded-xl border border-[#1e222c] mb-6 sm:mb-8 shadow-inner">
+            <div>
+              <span className="text-[10px] sm:text-[11px] text-[#6b7280] font-semibold block uppercase tracking-wider mb-0.5 sm:mb-1">
+                Worldwide Gross
               </span>
-              <span className="text-lg sm:text-xl font-black text-amber-400 font-serif">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold text-white tabular-nums tracking-tight">
                 {format(current.worldwideGrossUSD, current.worldwideGrossINR)}
               </span>
             </div>
 
-            <div className="p-3 bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
-                Opening Day Record
+            <div className="hidden sm:block w-[1px] h-9 bg-[#1f232d]" />
+
+            <div>
+              <span className="text-[10px] sm:text-[11px] text-[#6b7280] font-semibold block uppercase tracking-wider mb-0.5 sm:mb-1">
+                Opening Day
               </span>
-              <span className="text-lg sm:text-xl font-black text-slate-100 font-serif">
+              <span className="text-base sm:text-lg md:text-xl font-semibold text-[#c8d0de] tabular-nums tracking-tight">
                 {format(current.openingDayGrossUSD, current.openingDayGrossINR)}
               </span>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 p-3 bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">
+            <div className="hidden sm:block w-[1px] h-9 bg-[#1f232d]" />
+
+            <div>
+              <span className="text-[10px] sm:text-[11px] text-[#6b7280] font-semibold block uppercase tracking-wider mb-0.5 sm:mb-1">
                 Weekend Multiplier
               </span>
-              <span className="text-lg sm:text-xl font-black text-emerald-400 font-serif">
+              <span className="text-base sm:text-lg md:text-xl font-semibold text-emerald-400 tabular-nums tracking-tight">
                 {current.multiplier}x
               </span>
             </div>
           </div>
         </div>
 
-        {/* Buttons & Indicators */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-slate-800/80">
+        {/* Footer Actions & Slide Selector */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 sm:pt-6 border-t border-[#1a1c24] mt-auto">
           <div className="flex items-center gap-3">
             <button
               onClick={() => onSelectMovie(current)}
-              className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2"
+              className="px-4 sm:px-5 py-2.5 rounded-lg bg-[#f4f5f8] hover:bg-white text-black font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 shadow-sm"
             >
-              <Eye className="w-4 h-4" />
-              <span>Inspect Full Box Office Dossier</span>
+              <Eye className="w-3.5 h-3.5" />
+              <span>Inspect Full Dossier</span>
             </button>
 
             <button
               onClick={onExploreClick}
-              className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5"
+              className="px-4 sm:px-5 py-2.5 rounded-lg bg-[#14161d] hover:bg-[#1b1e27] text-[#c8d0de] border border-[#222631] text-xs sm:text-sm font-medium transition-colors flex items-center gap-1.5"
             >
               <span>Explore All Movies</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Pagination dots */}
-          <div className="flex items-center gap-2">
+          {/* Minimal pagination bar */}
+          <div className="flex items-center gap-1.5 self-end sm:self-auto">
             {spotlightMovies.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  currentIndex === idx ? 'w-8 bg-amber-400' : 'w-2 bg-slate-700 hover:bg-slate-500'
+                className={`h-1.5 rounded-full transition-all duration-200 ${
+                  currentIndex === idx ? 'w-6 bg-[#d99b26]' : 'w-2 bg-[#252833] hover:bg-[#393e4d]'
                 }`}
-                title={`View spotlight #${idx + 1}`}
+                title={`Spotlight #${idx + 1}`}
               />
             ))}
           </div>

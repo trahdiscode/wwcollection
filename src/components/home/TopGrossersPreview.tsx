@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, ArrowRight, TrendingUp, Sparkles, Flame } from 'lucide-react';
+import { Award, ArrowRight } from 'lucide-react';
 import { Movie } from '../../types/movie';
 import { useCurrency } from '../../context/CurrencyContext';
 import { VerdictBadge } from '../common/VerdictBadge';
@@ -42,59 +42,54 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
   const currentList = getFilteredMovies();
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
-      {/* Header & Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
-            <Award className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="text-base sm:text-lg font-bold text-white font-serif">
-              Box Office Hall of Fame
-            </h3>
-            <p className="text-xs text-slate-400">Rankings across global & Indian cinema</p>
-          </div>
+    <div className="bg-[#101217] border border-[#1c1f28] rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
+      {/* Header and Segmented Control */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#181a21]">
+        <div>
+          <h3 className="text-base font-semibold text-white">
+            Box Office Hall of Fame
+          </h3>
+          <p className="text-xs text-[#7b8290]">Rankings across global & Indian cinema</p>
         </div>
 
-        {/* Tab Pills */}
-        <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800/80 overflow-x-auto text-xs font-semibold">
+        {/* Tab Switcher */}
+        <div className="flex items-center gap-1 bg-[#0a0b0e] p-1 rounded-lg border border-[#1b1e26] overflow-x-auto text-xs">
           <button
             onClick={() => setActiveTab('worldwide')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
               activeTab === 'worldwide'
-                ? 'bg-amber-500 text-slate-950 font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#1e222c] text-white font-semibold shadow-sm'
+                : 'text-[#7e8594] hover:text-[#c4cad4]'
             }`}
           >
             Worldwide All-Time
           </button>
           <button
             onClick={() => setActiveTab('indian')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
               activeTab === 'indian'
-                ? 'bg-amber-500 text-slate-950 font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#1e222c] text-white font-semibold shadow-sm'
+                : 'text-[#7e8594] hover:text-[#c4cad4]'
             }`}
           >
             Indian All-Time
           </button>
           <button
             onClick={() => setActiveTab('opening')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
               activeTab === 'opening'
-                ? 'bg-amber-500 text-slate-950 font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#1e222c] text-white font-semibold shadow-sm'
+                : 'text-[#7e8594] hover:text-[#c4cad4]'
             }`}
           >
             Opening Day Records
           </button>
           <button
             onClick={() => setActiveTab('roi')}
-            className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
               activeTab === 'roi'
-                ? 'bg-amber-500 text-slate-950 font-bold'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-[#1e222c] text-white font-semibold shadow-sm'
+                : 'text-[#7e8594] hover:text-[#c4cad4]'
             }`}
           >
             Highest ROI Multiplier
@@ -102,17 +97,17 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
         </div>
       </div>
 
-      {/* Leaderboard Table */}
+      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-800/80">
-              <th className="py-2.5 px-3"># Rank</th>
-              <th className="py-2.5 px-3">Movie Title</th>
+            <tr className="text-[#646b7a] uppercase tracking-wider text-[10px] font-semibold border-b border-[#181a21]">
+              <th className="py-2.5 px-3 w-12 text-center">Rank</th>
+              <th className="py-2.5 px-3">Movie</th>
               <th className="py-2.5 px-3">Industry</th>
               <th className="py-2.5 px-3 text-right">
                 {activeTab === 'opening'
-                  ? 'Day 1 Collection'
+                  ? 'Day 1 Gross'
                   : activeTab === 'roi'
                   ? 'Return on Budget'
                   : 'Worldwide Gross'}
@@ -121,27 +116,27 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
               <th className="py-2.5 px-3 text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/50">
+          <tbody className="divide-y divide-[#15181f]">
             {currentList.map((movie, index) => {
               const rank = index + 1;
-              const rankColor =
+              const rankBadge =
                 rank === 1
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                  ? 'text-[#f2b84b] bg-[#211a0e] border-[#483719]'
                   : rank === 2
-                  ? 'bg-slate-300/20 text-slate-200 border-slate-300/40'
+                  ? 'text-[#e2e8f0] bg-[#1a1c24] border-[#2c303d]'
                   : rank === 3
-                  ? 'bg-amber-700/20 text-amber-500 border-amber-700/40'
-                  : 'bg-slate-800 text-slate-400 border-slate-700';
+                  ? 'text-[#f97316] bg-[#22160f] border-[#422514]'
+                  : 'text-[#717886] bg-[#111318] border-[#1d2028]';
 
               return (
                 <tr
                   key={movie.id}
                   onClick={() => onSelectMovie(movie)}
-                  className="hover:bg-slate-800/60 cursor-pointer transition-colors group"
+                  className="hover:bg-[#15181f]/80 cursor-pointer transition-colors group"
                 >
-                  <td className="py-3 px-3">
+                  <td className="py-3 px-3 text-center">
                     <span
-                      className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold border ${rankColor}`}
+                      className={`inline-flex items-center justify-center w-5 h-5 rounded text-[11px] font-mono font-bold border ${rankBadge}`}
                     >
                       {rank}
                     </span>
@@ -151,38 +146,38 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
                       <img
                         src={movie.posterUrl}
                         alt={movie.title}
-                        className="w-9 h-12 object-cover rounded-md bg-slate-950 border border-slate-800 shrink-0"
+                        className="w-8 h-11 object-cover rounded bg-[#090a0d] border border-[#1e222b] shrink-0"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=200';
                         }}
                       />
                       <div>
-                        <span className="font-bold text-slate-100 group-hover:text-amber-400 transition-colors block text-sm">
+                        <span className="font-semibold text-white group-hover:text-[#d99b26] transition-colors block text-xs">
                           {movie.title}
                         </span>
-                        <span className="text-[11px] text-slate-400">
-                          {movie.releaseYear} • Dir. {movie.director}
+                        <span className="text-[11px] text-[#717886]">
+                          {movie.releaseYear} · Dir. {movie.director}
                         </span>
                       </div>
                     </div>
                   </td>
                   <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#14161c] text-[#9ca3af] border border-[#1e222a]">
                       {movie.industry}
                     </span>
                   </td>
                   <td className="py-3 px-3 text-right">
                     {activeTab === 'opening' ? (
-                      <span className="text-sm font-bold text-cyan-400">
+                      <span className="text-xs font-bold text-[#38bdf8] tabular-nums font-mono">
                         {format(movie.openingDayGrossUSD, movie.openingDayGrossINR)}
                       </span>
                     ) : activeTab === 'roi' ? (
                       <div>
-                        <span className="text-sm font-bold text-emerald-400">
+                        <span className="text-xs font-bold text-emerald-400 tabular-nums font-mono">
                           +{movie.financials.roiPercentage}%
                         </span>
-                        <span className="text-[10px] text-slate-500 block">
+                        <span className="text-[10px] text-[#6b7280] block tabular-nums">
                           Budget:{' '}
                           {format(
                             movie.financials.productionBudgetUSD,
@@ -192,7 +187,7 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
                         </span>
                       </div>
                     ) : (
-                      <span className="text-sm font-black text-amber-400 font-serif">
+                      <span className="text-xs font-bold text-white tabular-nums font-mono">
                         {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
                       </span>
                     )}
@@ -201,16 +196,10 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
                     <VerdictBadge verdict={movie.verdict} size="sm" />
                   </td>
                   <td className="py-3 px-3 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectMovie(movie);
-                      }}
-                      className="text-xs text-amber-400 hover:text-amber-300 font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
-                    >
-                      <span>Stats</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    <span className="text-xs text-[#717886] group-hover:text-white font-medium inline-flex items-center gap-1 transition-colors">
+                      <span>Dossier</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </span>
                   </td>
                 </tr>
               );
@@ -219,15 +208,15 @@ export const TopGrossersPreview: React.FC<TopGrossersPreviewProps> = ({
         </table>
       </div>
 
-      {/* Footer Link */}
-      <div className="pt-2 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/80">
-        <span>Displaying Top 5 Record Breakers</span>
+      {/* Footer */}
+      <div className="pt-2 flex items-center justify-between text-xs text-[#686f7c] border-t border-[#181a21]">
+        <span>Top 5 verified records</span>
         <button
           onClick={onViewAllRankings}
-          className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1"
+          className="text-[#adb5c4] hover:text-white font-medium flex items-center gap-1 transition-colors"
         >
-          <span>View All 50+ Global Records & Full Leaderboards</span>
-          <ArrowRight className="w-4 h-4" />
+          <span>View All 50+ Global Records</span>
+          <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

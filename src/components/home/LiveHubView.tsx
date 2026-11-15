@@ -19,7 +19,7 @@ export const LiveHubView: React.FC<LiveHubViewProps> = ({
   onFilterIndustry,
 }) => {
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10 lg:space-y-12">
       {/* 1. Hero Spotlight Carousel */}
       <HeroSpotlight
         movies={ALL_MOVIES}

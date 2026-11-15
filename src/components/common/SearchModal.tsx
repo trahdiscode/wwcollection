@@ -28,9 +28,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (isOpen) onClose();
-        else {
-          // Open handled by parent or toggle
-        }
       }
       if (e.key === 'Escape' && isOpen) {
         onClose();
@@ -54,53 +51,51 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
           m.genres.some((g) => g.toLowerCase().includes(q))
         );
       }).slice(0, 8)
-    : ALL_MOVIES.slice(0, 5); // default trending
+    : ALL_MOVIES.slice(0, 6);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-950/80 backdrop-blur-md transition-all">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/80 backdrop-blur-sm transition-opacity">
       <div
         className="fixed inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
       
-      <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[80vh]">
+      <div className="relative w-full max-w-2xl bg-[#0e1015] border border-[#222634] rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[80vh]">
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b border-slate-800 bg-slate-900/90 gap-3">
-          <Search className="w-5 h-5 text-amber-400 shrink-0" />
+        <div className="flex items-center px-4 py-3 border-b border-[#1c202c] bg-[#090a0d] gap-3">
+          <Search className="w-4 h-4 text-slate-400 shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search movies by title, director, cast, or industry (e.g. Kalki, Cameron, RRR)..."
-            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-sm sm:text-base focus:outline-none"
+            placeholder="Search movie title, star, director, or industry (e.g. Kalki, Cameron, RRR)..."
+            className="w-full bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="text-slate-400 hover:text-slate-200 p-1"
+              className="text-slate-500 hover:text-slate-300 p-1"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800 rounded border border-slate-700">
+          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-slate-500 bg-[#161820] rounded border border-[#262c3d]">
             ESC
           </kbd>
         </div>
 
         {/* Results List */}
-        <div className="overflow-y-auto p-2 divide-y divide-slate-800/60">
-          <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-            <span>{query ? `Matches (${filtered.length})` : 'Popular & Trending Globally'}</span>
-            <span className="text-[10px] text-slate-500">Press ENTER or Click to open</span>
+        <div className="overflow-y-auto p-2 divide-y divide-[#181b24]">
+          <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500 flex items-center justify-between">
+            <span>{query ? `MATCHES (${filtered.length})` : 'TRENDING GLOBALLY'}</span>
+            <span className="text-[10px] text-slate-600">ENTER / CLICK TO SELECT</span>
           </div>
 
           {filtered.length === 0 ? (
-            <div className="py-12 text-center text-slate-400">
-              <Film className="w-8 h-8 mx-auto mb-2 opacity-40 text-slate-500" />
-              <p className="text-sm">No box office records found matching &ldquo;{query}&rdquo;</p>
-              <p className="text-xs text-slate-500 mt-1">Try searching by actor (e.g. Prabhas, Shah Rukh Khan), or industry.</p>
+            <div className="py-12 text-center text-slate-500 font-mono text-xs">
+              No matching blockbusters found for "{query}".
             </div>
           ) : (
             filtered.map((movie) => (
@@ -110,53 +105,47 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                   onSelectMovie(movie);
                   onClose();
                 }}
-                className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-800/80 cursor-pointer transition-colors group"
+                className="p-2.5 rounded-lg hover:bg-[#14161f] transition-colors cursor-pointer flex items-center justify-between gap-3 group"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <img
                     src={movie.posterUrl}
                     alt={movie.title}
-                    className="w-10 h-14 object-cover rounded-md bg-slate-800 border border-slate-700/60 shrink-0"
+                    className="w-9 h-13 object-cover rounded bg-[#090a0d] shrink-0 border border-[#1c202c]"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=300';
+                      (e.target as HTMLImageElement).src =
+                        'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=200';
                     }}
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-slate-100 group-hover:text-amber-400 transition-colors truncate">
+                      <span className="text-xs font-semibold text-slate-200 group-hover:text-amber-400 transition-colors truncate">
                         {movie.title}
-                      </h4>
-                      <span className="text-[11px] text-slate-400 shrink-0">({movie.releaseYear})</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500">
+                        {movie.releaseYear}
+                      </span>
                     </div>
-                    <p className="text-xs text-slate-400 truncate mt-0.5">
-                      <span className="text-slate-300 font-medium">{movie.industry}</span> • {movie.director} • {movie.genres.slice(0, 2).join(', ')}
+                    <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                      <span className="text-slate-400">{movie.industry}</span> • Dir. {movie.director} • Cast: {movie.cast.slice(0, 2).join(', ')}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0 ml-4">
-                  <div className="text-right">
-                    <span className="text-[10px] text-slate-400 block uppercase font-medium">WW Gross</span>
-                    <span className="text-xs font-bold text-amber-400">
+                <div className="flex items-center gap-3 shrink-0 font-mono text-right">
+                  <div>
+                    <span className="text-xs font-bold text-amber-400 block">
                       {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
                     </span>
+                    <span className="text-[10px] text-slate-500 block">
+                      {movie.verdict}
+                    </span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-slate-200 transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 transition-colors" />
                 </div>
               </div>
             ))
           )}
-        </div>
-
-        {/* Footer shortcuts */}
-        <div className="px-4 py-2.5 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
-          <div className="flex items-center gap-3">
-            <span>Tip: Search by Hollywood, Bollywood, Tollywood, Mollywood</span>
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <span>Worldwide Database</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          </div>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-slate-100 flex flex-col font-sans antialiased selection:bg-amber-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#090a0d] text-slate-100 flex flex-col font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
       {/* Navbar */}
       <Navbar
         currentTab={currentTab}
@@ -46,7 +46,7 @@ const MainApp: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 sm:pt-8 md:pt-10 pb-16 sm:pb-20">
         {currentTab === 'hub' && (
           <LiveHubView
             onSelectMovie={(movie) => setSelectedMovie(movie)}
@@ -81,13 +81,13 @@ const MainApp: React.FC = () => {
 
       {/* Floating Bottom Comparison Drawer Bar (shown if compareList has movies and not on compare tab) */}
       {compareList.length > 0 && currentTab !== 'compare' && (
-        <aside aria-label="Comparison dock" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-slate-900/95 border border-amber-500/40 rounded-full py-2.5 px-4 sm:px-6 shadow-2xl backdrop-blur-md flex items-center gap-3 sm:gap-4 animate-in slide-in-from-bottom-4 duration-200">
+        <aside aria-label="Comparison dock" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-[#111317]/95 border border-[#272b38] rounded-xl py-2 px-3 sm:px-4 shadow-2xl backdrop-blur-md flex items-center gap-3 animate-in slide-in-from-bottom-2 duration-150">
           <div className="flex items-center gap-2">
-            <span className="p-1 rounded-full bg-amber-500 text-slate-950 font-bold">
+            <span className="p-1 rounded bg-[#1c202c] text-amber-400">
               <Scale className="w-3.5 h-3.5" />
             </span>
-            <span className="text-xs font-bold text-white whitespace-nowrap">
-              {compareList.length} Movie{compareList.length > 1 ? 's' : ''} in Arena
+            <span className="text-xs font-mono font-medium text-slate-200 whitespace-nowrap">
+              {compareList.length} in Arena
             </span>
           </div>
 
@@ -97,18 +97,18 @@ const MainApp: React.FC = () => {
                 setCurrentTab('compare');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="px-3.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full text-xs flex items-center gap-1 shadow-md transition-colors"
+              className="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold font-mono rounded text-xs flex items-center gap-1 transition-colors"
             >
-              <span>Compare Now</span>
+              <span>Compare</span>
               <ArrowRight className="w-3 h-3" />
             </button>
 
             <button
               onClick={clearCompare}
-              className="p-1 text-slate-400 hover:text-rose-400 rounded-full"
+              className="p-1 text-slate-500 hover:text-slate-300 rounded"
               title="Clear Comparison list"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </aside>

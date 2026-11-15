@@ -1,7 +1,6 @@
 import React from 'react';
-import { Globe, ArrowRight, TrendingUp } from 'lucide-react';
+import { Globe, ArrowRight } from 'lucide-react';
 import { FilmIndustry, Movie } from '../../types/movie';
-import { INDUSTRY_MARKET_SHARE } from '../../data/industryStats';
 import { useCurrency } from '../../context/CurrencyContext';
 
 interface IndustryPulseProps {
@@ -22,81 +21,78 @@ export const IndustryPulse: React.FC<IndustryPulseProps> = ({
     title: string;
     description: string;
     topMovieId: string;
-    flag: string;
+    code: string;
   }[] = [
     {
       id: 'Hollywood',
       title: 'Hollywood',
       description: 'Global reach, IMAX spectacles, and high-concept studio tentpoles.',
       topMovieId: 'avatar',
-      flag: '🇺🇸',
+      code: 'US',
     },
     {
       id: 'Bollywood',
       title: 'Bollywood (Hindi)',
       description: 'North India heartland, mass action spectacles, and global diaspora power.',
       topMovieId: 'dangal',
-      flag: '🇮🇳',
+      code: 'IN-HI',
     },
     {
       id: 'Tollywood',
       title: 'Tollywood (Telugu)',
-      description: 'Pioneers of Pan-India spectacle cinema: Rajamouli epics and visionary mythologies.',
+      description: 'Pioneers of Pan-India spectacle cinema and mythologies.',
       topMovieId: 'baahubali-2',
-      flag: '🇮🇳',
+      code: 'IN-TE',
     },
     {
       id: 'Kollywood',
       title: 'Kollywood (Tamil)',
-      description: 'Superstar power, cinematic auteurism, and explosive worldwide markets.',
+      description: 'Superstar power, auteur craft, and explosive worldwide markets.',
       topMovieId: 'jailer',
-      flag: '🇮🇳',
+      code: 'IN-TA',
     },
     {
       id: 'Mollywood',
       title: 'Mollywood (Malayalam)',
-      description: '2024 breakout cinema: phenomenal storytelling, low budgets, and record multipliers.',
+      description: 'Breakout realism, tight budgets, and record multipliers.',
       topMovieId: 'manjummel-boys',
-      flag: '🇮🇳',
+      code: 'IN-ML',
     },
     {
       id: 'Sandalwood',
       title: 'Sandalwood (Kannada)',
-      description: 'Rooted folklore, visual grit, and extraordinary return-on-investment multipliers.',
+      description: 'Rooted folklore, visual grit, and extraordinary budget multipliers.',
       topMovieId: 'kgf-chapter-2',
-      flag: '🇮🇳',
+      code: 'IN-KA',
     },
     {
       id: 'Korean',
       title: 'Korean Cinema (Hallyu)',
-      description: 'Oscar-winning masterclasses, gripping occult thrillers, and explosive crime franchises.',
+      description: 'Oscar-winning thrillers and explosive crime franchises.',
       topMovieId: 'parasite',
-      flag: '🇰🇷',
+      code: 'KR',
     },
     {
       id: 'International',
       title: 'International Cinema',
-      description: 'Record-shattering Japanese anime features, Chinese epics, and European champions.',
+      description: 'Record-shattering Japanese anime and East Asian blockbusters.',
       topMovieId: 'demon-slayer-mugen-train',
-      flag: '🇯🇵',
+      code: 'INT',
     },
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Globe className="w-5 h-5 text-amber-400" />
-          <h3 className="text-lg font-bold text-white font-serif">
-            Multilingual Film Industries at a Glance
-          </h3>
-        </div>
-        <span className="text-xs text-slate-400">
-          Tracking 8 major cinematic powerhouses worldwide
+    <div className="space-y-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+        <h3 className="text-base font-semibold text-white">
+          Major Film Industries
+        </h3>
+        <span className="text-xs text-[#717886]">
+          Tracking 8 global cinematic markets
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {industries.map((ind) => {
           const topMovie = movies.find((m) => m.id === ind.topMovieId);
 
@@ -104,19 +100,21 @@ export const IndustryPulse: React.FC<IndustryPulseProps> = ({
             <div
               key={ind.id}
               onClick={() => onSelectIndustry(ind.id)}
-              className="bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-4 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+              className="bg-[#101217] hover:bg-[#14171e] border border-[#1c1f28] hover:border-[#2b303d] rounded-xl p-4 transition-all duration-150 cursor-pointer group flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors flex items-center gap-1.5">
-                    <span>{ind.flag}</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-semibold text-white group-hover:text-[#d99b26] transition-colors flex items-center gap-1.5">
+                    <span className="font-mono text-[10px] text-[#717886] bg-[#16181f] px-1.5 py-0.5 rounded border border-[#20232b]">
+                      {ind.code}
+                    </span>
                     <span>{ind.title}</span>
                   </span>
-                  <span className="text-[10px] text-amber-400 font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                    Track
+                  <span className="text-[10px] text-[#8a92a1] group-hover:text-white transition-colors">
+                    Filter →
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-3">
+                <p className="text-xs text-[#788090] line-clamp-2 leading-relaxed mb-3">
                   {ind.description}
                 </p>
               </div>
@@ -127,18 +125,18 @@ export const IndustryPulse: React.FC<IndustryPulseProps> = ({
                     e.stopPropagation();
                     onSelectMovie(topMovie);
                   }}
-                  className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs"
+                  className="pt-2 border-t border-[#181a21] flex items-center justify-between text-xs"
                 >
                   <div className="min-w-0 pr-2">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">
-                      Industry Leader
+                    <span className="text-[10px] text-[#5d6370] block uppercase font-medium">
+                      Leader
                     </span>
-                    <span className="font-semibold text-slate-200 hover:text-amber-300 truncate block">
+                    <span className="font-medium text-[#c8d0de] hover:text-[#d99b26] truncate block text-[11px]">
                       {topMovie.title}
                     </span>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="font-bold text-amber-400 font-mono text-[11px]">
+                    <span className="font-mono font-bold text-white text-[11px] tabular-nums">
                       {format(topMovie.worldwideGrossUSD, topMovie.worldwideGrossINR, { compact: true })}
                     </span>
                   </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bookmark, Scale, Eye, TrendingUp, Calendar, Clock } from 'lucide-react';
+import { Bookmark, Scale } from 'lucide-react';
 import { Movie } from '../../types/movie';
 import { useCurrency } from '../../context/CurrencyContext';
 import { useWatchlist, useComparison } from '../../context/WatchlistContext';
@@ -24,93 +24,93 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onSelectMovie }) =>
   return (
     <div
       onClick={() => onSelectMovie(movie)}
-      className="bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 cursor-pointer flex flex-col group relative"
+      className="bg-[#101217] hover:bg-[#14161d] border border-[#1c1f28] hover:border-[#2a2e39] rounded-xl overflow-hidden transition-all duration-150 cursor-pointer flex flex-col group relative"
     >
-      {/* Poster Image & Overlay Tags */}
-      <div className="relative aspect-[2/3] w-full bg-slate-950 overflow-hidden">
+      {/* Poster Image with Subtle Gradient */}
+      <div className="relative aspect-[2/3] w-full bg-[#08090b] overflow-hidden">
         <img
           src={movie.posterUrl}
           alt={movie.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter brightness-95 group-hover:brightness-100"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           onError={(e) => {
             (e.target as HTMLImageElement).src =
               'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=400';
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#101217] via-transparent to-transparent opacity-80" />
 
-        {/* Top Floating Badges */}
-        <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-950/85 backdrop-blur-md text-amber-300 border border-amber-500/30">
+        {/* Top Badges */}
+        <div className="absolute top-2 left-2 right-2 flex items-center justify-between z-10">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#0a0b0e]/90 text-[#c8d0de] border border-[#20232c] uppercase tracking-wider backdrop-blur-sm">
             {movie.industry}
           </span>
 
-          <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => toggleWatchlist(movie.id)}
-              className={`p-1.5 rounded-lg backdrop-blur-md border transition-all ${
+              className={`p-1.5 rounded-md backdrop-blur-sm transition-colors ${
                 isBookmarked
-                  ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold'
-                  : 'bg-slate-950/80 text-slate-300 hover:text-white border-slate-800 hover:bg-slate-900'
+                  ? 'bg-[#d99b26] text-black font-bold'
+                  : 'bg-[#0a0b0e]/80 text-[#858d9c] hover:text-white border border-[#20232c]'
               }`}
               title={isBookmarked ? 'Tracked' : 'Bookmark movie'}
             >
-              <Bookmark className="w-3.5 h-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
+              <Bookmark className="w-3 h-3" fill={isBookmarked ? 'currentColor' : 'none'} />
             </button>
 
             <button
               onClick={() => (isCompared ? removeFromCompare(movie.id) : addToCompare(movie.id))}
-              className={`p-1.5 rounded-lg backdrop-blur-md border transition-all ${
+              className={`p-1.5 rounded-md backdrop-blur-sm transition-colors ${
                 isCompared
-                  ? 'bg-cyan-500 text-slate-950 border-cyan-400 font-bold'
-                  : 'bg-slate-950/80 text-slate-300 hover:text-white border-slate-800 hover:bg-slate-900'
+                  ? 'bg-sky-500 text-black font-bold'
+                  : 'bg-[#0a0b0e]/80 text-[#858d9c] hover:text-white border border-[#20232c]'
               }`}
-              title={isCompared ? 'In Compare list' : 'Compare movie'}
+              title={isCompared ? 'In Arena' : 'Compare movie'}
             >
-              <Scale className="w-3.5 h-3.5" />
+              <Scale className="w-3 h-3" />
             </button>
           </div>
         </div>
 
-        {/* Bottom Floating Stats on Poster */}
-        <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
+        {/* Bottom Overlay Title */}
+        <div className="absolute bottom-2 left-2 right-2 z-10">
           <VerdictBadge verdict={movie.verdict} size="sm" />
-          <h3 className="text-base font-bold text-white tracking-tight mt-1 truncate group-hover:text-amber-400 transition-colors">
+          <h3 className="text-sm font-semibold text-white tracking-tight mt-1 truncate group-hover:text-[#d99b26] transition-colors">
             {movie.title}
           </h3>
-          <p className="text-[11px] text-slate-300 truncate">
-            {movie.releaseYear} • {movie.director}
+          <p className="text-[11px] text-[#858d9c] truncate">
+            {movie.releaseYear} · {movie.director}
           </p>
         </div>
       </div>
 
-      {/* Card Content & Box Office Stats */}
-      <div className="p-3.5 space-y-3 flex-1 flex flex-col justify-between bg-slate-900/90">
+      {/* Card Content Footer */}
+      <div className="p-3 space-y-2.5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Headline Numbers */}
-          <div className="flex items-baseline justify-between">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
-              Worldwide Gross
+          {/* Worldwide Gross */}
+          <div className="flex items-baseline justify-between text-xs">
+            <span className="text-[10px] text-[#6b7280] uppercase tracking-wider font-medium">
+              Worldwide
             </span>
-            <span className="text-base font-black text-amber-400 font-serif">
+            <span className="font-bold text-white tabular-nums font-mono">
               {format(movie.worldwideGrossUSD, movie.worldwideGrossINR)}
             </span>
           </div>
 
-          {/* Domestic vs Overseas Visual Share Bar */}
-          <div className="mt-2 space-y-1">
-            <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium">
+          {/* Revenue Distribution Bar */}
+          <div className="mt-1.5 space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#6b7280]">
               <span>Dom: {domesticShare}%</span>
               <span>OS: {overseasShare}%</span>
             </div>
-            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden flex">
+            <div className="w-full bg-[#1b1e26] h-1 rounded-full overflow-hidden flex">
               <div
-                className="bg-amber-400 h-full"
+                className="bg-sky-400 h-full"
                 style={{ width: `${domesticShare}%` }}
                 title={`Domestic: ${format(movie.domesticGrossUSD, movie.domesticGrossINR)}`}
               />
               <div
-                className="bg-cyan-400 h-full"
+                className="bg-teal-400 h-full"
                 style={{ width: `${overseasShare}%` }}
                 title={`Overseas: ${format(movie.overseasGrossUSD, movie.overseasGrossINR)}`}
               />
@@ -118,21 +118,23 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onSelectMovie }) =>
           </div>
         </div>
 
-        {/* Additional Box Office Metrics */}
-        <div className="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
+        {/* Quick Numbers */}
+        <div className="pt-2 border-t border-[#181a21] grid grid-cols-2 gap-2 text-[10px]">
           <div>
-            <span className="text-slate-500 block text-[9px] uppercase font-semibold">
-              Opening Day
+            <span className="text-[#646b7a] block uppercase font-medium">
+              Day 1
             </span>
-            <span className="font-bold text-slate-200">
+            <span className="font-medium text-[#c8d0de] tabular-nums font-mono">
               {format(movie.openingDayGrossUSD, movie.openingDayGrossINR, { compact: true })}
             </span>
           </div>
           <div className="text-right">
-            <span className="text-slate-500 block text-[9px] uppercase font-semibold">
+            <span className="text-[#646b7a] block uppercase font-medium">
               Multiplier
             </span>
-            <span className="font-bold text-emerald-400 font-mono">{movie.multiplier}x</span>
+            <span className="font-medium text-emerald-400 font-mono tabular-nums">
+              {movie.multiplier}x
+            </span>
           </div>
         </div>
       </div>
