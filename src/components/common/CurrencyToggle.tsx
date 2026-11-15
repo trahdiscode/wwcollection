@@ -4,12 +4,12 @@ import { CurrencyMode } from '../../types/movie';
 
 export interface CurrencyToggleProps {
   className?: string;
-  showLabels?: boolean;
+  showAllLabels?: boolean;
 }
 
 export const CurrencyToggle: React.FC<CurrencyToggleProps> = ({
   className = '',
-  showLabels = false,
+  showAllLabels = false,
 }) => {
   const { currency, setCurrency } = useCurrency();
 
@@ -38,7 +38,9 @@ export const CurrencyToggle: React.FC<CurrencyToggleProps> = ({
             onClick={() => setCurrency(opt.mode)}
             title={opt.title}
             aria-pressed={isActive}
-            className={`h-7 sm:h-7.5 px-2 sm:px-2.5 rounded-lg text-xs transition-all duration-150 flex items-center gap-1 sm:gap-1.5 cursor-pointer relative ${
+            className={`h-7 sm:h-7.5 rounded-lg text-xs transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer relative ${
+              isActive || showAllLabels ? 'px-2.5' : 'px-2 min-w-[28px]'
+            } ${
               isActive
                 ? 'bg-[#1e2330] text-white shadow-xs font-semibold border border-[#2e3547]'
                 : 'text-[#7a8292] hover:text-[#dce0e8] hover:bg-[#14161f] border border-transparent font-medium'
@@ -51,13 +53,11 @@ export const CurrencyToggle: React.FC<CurrencyToggleProps> = ({
             >
               {opt.symbol}
             </span>
-            <span
-              className={`text-[11px] font-sans font-semibold tracking-tight ${
-                showLabels ? 'inline' : 'hidden xl:inline'
-              }`}
-            >
-              {opt.label}
-            </span>
+            {(isActive || showAllLabels) && (
+              <span className="text-[11px] font-sans font-semibold tracking-tight">
+                {opt.label}
+              </span>
+            )}
           </button>
         );
       })}

@@ -115,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-[72px] gap-3 sm:gap-4 lg:gap-4 xl:gap-6">
+        <div className="flex items-center justify-between h-16 sm:h-[72px] gap-4 lg:gap-6">
           {/* Left: Brand Logo & Title */}
           <div
             onClick={() => handleNavClick('hub')}
@@ -127,14 +127,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             role="button"
             tabIndex={0}
-            className="flex items-center gap-2.5 cursor-pointer group shrink-0 select-none py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 rounded-xl"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0 select-none py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 rounded-xl"
             aria-label="CineMetrix Global Home"
           >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#1c202d] to-[#10121a] border border-[#272d3e] flex items-center justify-center text-[#d99b26] shadow-inner group-hover:border-[#d99b26]/60 group-hover:shadow-[0_0_18px_rgba(217,155,38,0.2)] transition-all duration-200">
               <Film className="w-4 h-4 transition-transform duration-200 group-hover:scale-105" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[15px] font-extrabold tracking-tight text-white font-sans group-hover:text-[#f4f5f8] transition-colors">
+              <span className="text-[15px] sm:text-base font-extrabold tracking-tight text-white font-sans group-hover:text-[#f4f5f8] transition-colors">
                 CINEMETRIX
               </span>
               <span className="text-[9px] font-bold text-[#d99b26] tracking-widest uppercase bg-[#d99b26]/10 px-1.5 py-0.5 rounded border border-[#d99b26]/25 font-mono leading-none">
@@ -146,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Center: Desktop Navigation Tabs */}
           <nav
             aria-label="Primary navigation"
-            className="hidden lg:flex items-center shrink-0 gap-1 xl:gap-1.5 bg-[#0d0f14]/85 backdrop-blur-sm p-1 rounded-2xl border border-[#1b1e28] shadow-inner"
+            className="hidden lg:flex items-center shrink-0 gap-1.5 bg-[#0d0f14]/85 backdrop-blur-sm p-1.5 rounded-2xl border border-[#1b1e28] shadow-inner"
           >
             {navLinks.map((tab) => {
               const active = currentTab === tab.id;
@@ -154,7 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => handleNavClick(tab.id)}
-                  className={`group relative flex items-center gap-1.5 px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-xl text-xs font-medium transition-all duration-150 whitespace-nowrap select-none cursor-pointer ${
+                  className={`group relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium transition-all duration-150 whitespace-nowrap select-none cursor-pointer ${
                     active
                       ? 'bg-[#1e2330] text-white shadow-xs font-semibold border border-[#2f3649]/80'
                       : 'text-[#828a9c] hover:text-[#f0f2f7] hover:bg-[#151720] border border-transparent'
@@ -185,8 +185,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right: Utility Cluster (Currency, Search, Watchlist, Mobile Menu) */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Currency Selector */}
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            {/* Compact Proportional Currency Selector */}
             <CurrencyToggle />
 
             {/* Subtle hairline separator between currency engine and user actions */}
@@ -195,13 +195,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Quick Search Button */}
             <button
               onClick={onOpenSearch}
-              className="flex items-center gap-2 h-9 sm:h-[38px] px-2.5 sm:px-3 rounded-xl bg-[#0f1116] hover:bg-[#161821] border border-[#1e222d] hover:border-[#2d3345] text-[#858d9e] hover:text-white text-xs font-medium transition-all duration-150 shadow-xs cursor-pointer group"
+              className="flex items-center gap-2.5 h-9 sm:h-[38px] px-3 rounded-xl bg-[#0f1116] hover:bg-[#161821] border border-[#1e222d] hover:border-[#2d3345] text-[#858d9e] hover:text-white text-xs font-medium transition-all duration-150 shadow-xs cursor-pointer group"
               title="Quick Search (Ctrl+K)"
               aria-label="Search database (Ctrl+K)"
             >
               <Search className="w-3.5 h-3.5 text-[#8890a2] group-hover:text-[#d99b26] transition-colors" />
               <span className="hidden sm:inline font-medium text-xs">Search</span>
-              <kbd className="hidden 2xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[#626978] bg-[#161822] rounded-md border border-[#242835] group-hover:text-[#9ea6b8] group-hover:border-[#33394b] transition-colors">
+              <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[#626978] bg-[#161822] rounded-md border border-[#242835] group-hover:text-[#9ea6b8] group-hover:border-[#33394b] transition-colors">
                 ⌘K
               </kbd>
             </button>
@@ -274,7 +274,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Globe className="w-3.5 h-3.5 text-[#5e6677]" />
               <span>Dual-Currency Valuation Engine</span>
             </div>
-            <CurrencyToggle showLabels={true} />
+            <CurrencyToggle showAllLabels={true} />
           </div>
         </div>
       )}
