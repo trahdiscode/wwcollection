@@ -13,6 +13,7 @@ import {
   Globe,
 } from 'lucide-react';
 import { CurrencyToggle } from './CurrencyToggle';
+import { BrandLogo } from './BrandLogo';
 import { useWatchlist, useComparison } from '../../context/WatchlistContext';
 
 export type NavTab = 'hub' | 'explorer' | 'rankings' | 'compare' | 'analytics' | 'news';
@@ -127,20 +128,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             role="button"
             tabIndex={0}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0 select-none py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 rounded-xl"
-            aria-label="CineMetrix Global Home"
+            className="flex items-center cursor-pointer group shrink-0 select-none py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 rounded-xl"
+            aria-label="WW Movie Collection Home"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#1c202d] to-[#10121a] border border-[#272d3e] flex items-center justify-center text-[#d99b26] shadow-inner group-hover:border-[#d99b26]/60 group-hover:shadow-[0_0_18px_rgba(217,155,38,0.2)] transition-all duration-200">
-              <Film className="w-4 h-4 transition-transform duration-200 group-hover:scale-105" />
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[15px] sm:text-base font-extrabold tracking-tight text-white font-sans group-hover:text-[#f4f5f8] transition-colors">
-                CINEMETRIX
-              </span>
-              <span className="text-[9px] font-bold text-[#d99b26] tracking-widest uppercase bg-[#d99b26]/10 px-1.5 py-0.5 rounded border border-[#d99b26]/25 font-mono leading-none">
-                GLOBAL
-              </span>
-            </div>
+            <BrandLogo variant="horizontal" size="md" />
           </div>
 
           {/* Center: Desktop Navigation Tabs */}
@@ -241,7 +232,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="font-semibold text-[#8b93a4] uppercase tracking-wider text-[11px] font-mono">
               Platform Navigation
             </span>
-            <span className="text-[11px] text-[#5e6677]">CineMetrix Global</span>
+            <span className="text-[11px] text-[#5e6677] font-mono">WW MOVIE COLLECTION</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">

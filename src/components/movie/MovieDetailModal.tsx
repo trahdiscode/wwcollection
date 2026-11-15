@@ -56,7 +56,7 @@ export const MovieDetailModal: React.FC<MovieDetailModalProps> = ({
     const text = `${movie.title} (${movie.releaseYear}) | Worldwide: ${format(
       movie.worldwideGrossUSD,
       movie.worldwideGrossINR
-    )} | Verdict: ${movie.verdict} | CineMetrix Global`;
+    )} | Verdict: ${movie.verdict} | Tracked via WW MOVIE COLLECTION`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

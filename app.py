@@ -3,7 +3,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="CineMetrix Global — Worldwide Movie Box Office Intelligence",
+    page_title="WW MOVIE COLLECTION — Worldwide Movie Box Office Intelligence",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="collapsed",

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Film, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { NavTab } from './Navbar';
+import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
   onSelectTab: (tab: NavTab) => void;
@@ -34,12 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
       {/* Main Footer Links & Information */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-3 md:col-span-1">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-amber-400 flex items-center justify-center text-slate-950 font-bold">
-              <Film className="w-3.5 h-3.5" />
-            </div>
-            <span className="text-sm font-bold tracking-tight text-white font-mono">CINEMETRIX GLOBAL</span>
-          </div>
+          <BrandLogo variant="horizontal" size="md" />
           <p className="text-xs leading-relaxed text-slate-500">
             Authoritative entertainment data platform for tracking worldwide theatrical collections, historical records, pan-industry comparative analytics, and global movie developments.
           </p>
@@ -142,7 +138,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
       <div className="border-t border-[#14161f] py-4 bg-[#050608]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600 font-mono text-[11px]">
           <div>
-            © {new Date().getFullYear()} CineMetrix Global. Worldwide Movie Box Office Intelligence.
+            © {new Date().getFullYear()} WW MOVIE COLLECTION. Worldwide Movie Box Office Intelligence.
           </div>
           <div className="flex items-center gap-4">
             <span>Built for film enthusiasts, analysts & trade researchers</span>

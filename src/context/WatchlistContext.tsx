@@ -12,7 +12,9 @@ const WatchlistContext = createContext<WatchlistContextType | undefined>(undefin
 export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [watchlist, setWatchlist] = useState<string[]>(() => {
     try {
-      const saved = localStorage.getItem('cinemetrix_watchlist');
+      const saved =
+        localStorage.getItem('ww_movie_collection_watchlist') ||
+        localStorage.getItem('cinemetrix_watchlist');
       return saved ? JSON.parse(saved) : ['dune-part-two', 'kalki-2898-ad', 'avatar-the-way-of-water'];
     } catch {
       return ['dune-part-two', 'kalki-2898-ad'];
@@ -20,7 +22,7 @@ export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   });
 
   useEffect(() => {
-    localStorage.setItem('cinemetrix_watchlist', JSON.stringify(watchlist));
+    localStorage.setItem('ww_movie_collection_watchlist', JSON.stringify(watchlist));
   }, [watchlist]);
 
   const toggleWatchlist = (movieId: string) => {

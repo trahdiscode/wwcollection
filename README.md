@@ -1,4 +1,4 @@
-# CineMetrix Global — Worldwide Movie Box Office & Entertainment Tracking Platform
+# WW MOVIE COLLECTION — Worldwide Movie Box Office & Entertainment Tracking Platform
 
 A modern, responsive, data-driven entertainment intelligence platform built for tracking worldwide movie box-office collections, exploring multi-industry theatrical performances, and following developments in global cinema.
 

@@ -12,13 +12,13 @@ const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined
 
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currency, setCurrencyState] = useState<CurrencyMode>(() => {
-    const saved = localStorage.getItem('cinemetrix_currency');
+    const saved = localStorage.getItem('ww_movie_collection_currency') || localStorage.getItem('cinemetrix_currency');
     return (saved as CurrencyMode) || 'USD';
   });
 
   const setCurrency = (mode: CurrencyMode) => {
     setCurrencyState(mode);
-    localStorage.setItem('cinemetrix_currency', mode);
+    localStorage.setItem('ww_movie_collection_currency', mode);
   };
 
   const getRawValue = (grossUSD: number, grossINR: number): number => {

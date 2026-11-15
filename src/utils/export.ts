@@ -41,7 +41,7 @@ export function exportMoviesToCSV(movies: Movie[], currency: CurrencyMode) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.setAttribute('href', url);
-  link.setAttribute('download', `cinemetrix_box_office_${new Date().toISOString().slice(0, 10)}.csv`);
+  link.setAttribute('download', `ww_movie_collection_${new Date().toISOString().slice(0, 10)}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -53,7 +53,7 @@ export function exportMoviesToJSON(movies: Movie[]) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.setAttribute('href', url);
-  link.setAttribute('download', `cinemetrix_box_office_${new Date().toISOString().slice(0, 10)}.json`);
+  link.setAttribute('download', `ww_movie_collection_${new Date().toISOString().slice(0, 10)}.json`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
